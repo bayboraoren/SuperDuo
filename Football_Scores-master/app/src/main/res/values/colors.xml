@@ -61,6 +61,7 @@
     <color name="orange13">#FFECC0</color>
     <color name="orange14">#FFF6DF</color>
 
+
     <color name="red01">#CC0000</color>
     <color name="red02">#D30A0A</color>
     <color name="red03">#DB1313</color>
@@ -76,5 +77,10 @@
     <color name="red13">#FFCACA</color>
     <color name="red14">#FFE4E4</color>
 
+
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#727272</color>
+    <color name="white">#FFFFFF</color>
+    <color name="activated">#E0E0E0</color>
 
 </resources>
