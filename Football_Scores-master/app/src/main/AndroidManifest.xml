@@ -35,11 +35,21 @@
         </activity>
         <service android:name=".service.myFetchService" />
 
+        <intent-filter>
+            <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+        </intent-filter>
+        <intent-filter>
+            <action android:name="AUTO_UPDATE" />
+        </intent-filter>
+
         <receiver
-            android:name=".ScoresWidgetProvider"
-            android:label="@string/widget_text">
+            android:name="barqsoft.footballscores.ScoresWidgetProvider"
+            android:label="alarmMgrTest" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="AUTO_UPDATE" />
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
