@@ -1,6 +1,5 @@
 package barqsoft.footballscores;
 
-import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -8,7 +7,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
+import android.net.Uri;
 import android.util.Log;
 import android.widget.RemoteViews;
 
@@ -25,9 +24,14 @@ public class ScoresWidgetProvider extends AppWidgetProvider {
     public static final String ACTION_AUTO_UPDATE = "AUTO_UPDATE";
     private final String TAG = this.getClass().getName();
 
+    private void updateWidget(Context context) {
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        int appWidgetIds[] = appWidgetManager.getAppWidgetIds(new ComponentName(context, ScoresWidgetProvider.class));
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listViewWidget);
+    }
+
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        super.onUpdate(context, appWidgetManager, appWidgetIds);
         Log.d(TAG, "onUpdate()");
         AlarmManager alarmManager;
         Intent intent = new Intent(context, UpdateWidgetService.class);
@@ -35,40 +39,56 @@ public class ScoresWidgetProvider extends AppWidgetProvider {
         alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(System.currentTimeMillis());
-        //cal.add(Calendar.SECOND, 10);
+        cal.add(Calendar.SECOND, 10);
 
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), 10 * 1000, pendingIntent);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), 5 * 1000, pendingIntent);
 
-        // Change the text in the widget
         int layoutId = R.layout.scores_widget;
-        RemoteViews updateViews = new RemoteViews(context.getPackageName(), layoutId);
+        RemoteViews remoteViews = updateWidgetListView(context, layoutId);
+        appWidgetManager.updateAppWidget(layoutId, remoteViews);
 
-        // update time text
-        updateViews.setTextViewText(R.id.widget_high_temperature, cal.getTime().toString());
-        appWidgetManager.updateAppWidget(appWidgetIds, updateViews);
         super.onUpdate(context, appWidgetManager, appWidgetIds);
 
     }
 
 
-   @Override
+    @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d(TAG, "onRecieve()");
-
-
+        super.onReceive(context, intent);
         if (intent.getAction().equals(ACTION_AUTO_UPDATE)) {
-            Log.d(TAG, "do something here");
 
-            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+            /*AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             ComponentName thisAppWidget = new ComponentName(context.getPackageName(), ScoresWidgetProvider.class.getName());
             int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisAppWidget);
 
-            onUpdate(context, appWidgetManager, appWidgetIds);
+            onUpdate(context, appWidgetManager, appWidgetIds);*/
+            updateWidget(context);
         }
 
-        super.onReceive(context, intent);
+
     }
 
+
+    private RemoteViews updateWidgetListView(Context context, int appWidgetId) {
+
+        //which layout to show on widget
+        RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
+                R.layout.scores_widget);
+
+        //RemoteViews Service needed to provide adapter for ListView
+        Intent svcIntent = new Intent(context, UpdateWidgetService.class);
+        //passing app widget id to that RemoteViews Service
+        svcIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+        //setting a unique Uri to the intent
+        //don't know its purpose to me right now
+        svcIntent.setData(Uri.parse(svcIntent.toUri(Intent.URI_INTENT_SCHEME)));
+        //setting adapter to listview of the widget
+        remoteViews.setRemoteAdapter(appWidgetId, R.id.listViewWidget,
+                svcIntent);
+        //setting an empty view in case of no data
+        remoteViews.setEmptyView(R.id.listViewWidget, R.id.empty_view);
+        return remoteViews;
+    }
 
     @Override
     public void onEnabled(Context context) {

@@ -7,39 +7,28 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.RemoteViews;
+import android.widget.RemoteViewsService;
 
 import barqsoft.footballscores.R;
 import barqsoft.footballscores.ScoresWidgetProvider;
+import barqsoft.footballscores.widget.ListProvider;
 
 /**
  * Created by bora on 15.10.2015.
  */
-public class UpdateWidgetService extends Service {
-
-    private final String TAG = this.getClass ().getName ();
-
-    @Override
-    public void onStart(Intent intent, int startId)
-    {
-        Log.d(TAG, "onStart()");
-
-        //Change the text in the widget - initial update will put the current time in it
-        int layoutId = R.layout.scores_widget;
-        RemoteViews updateViews = new RemoteViews (this.getPackageName(), layoutId);
-        updateViews.setTextViewText(R.id.widget_high_temperature, "fooo");
-
-        ComponentName thisWidget = new ComponentName(this, ScoresWidgetProvider.class);
-        AppWidgetManager manager = AppWidgetManager.getInstance(this);
-        manager.updateAppWidget(thisWidget, updateViews);
-    }
-
+public class UpdateWidgetService extends RemoteViewsService {
+	/*
+	 * So pretty simple just defining the Adapter of the listview
+	 * here Adapter is ListProvider
+	 * */
 
     @Override
-    public IBinder onBind(Intent intent)
-    {
-        // no need to bind
-        return null;
+    public RemoteViewsFactory onGetViewFactory(Intent intent) {
+        int appWidgetId = intent.getIntExtra(
+                AppWidgetManager.EXTRA_APPWIDGET_ID,
+                AppWidgetManager.INVALID_APPWIDGET_ID);
+
+        return (new ListProvider(this.getApplicationContext(), intent));
     }
 
 }
-
