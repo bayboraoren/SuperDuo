@@ -29,11 +29,11 @@ public class WidgetProvider extends AppWidgetProvider {
             //svcIntent.setData(Uri.parse(svcIntent .toUri(Intent.URI_INTENT_SCHEME)));
 
             RemoteViews widget = new RemoteViews(context.getPackageName(), R.layout.widget);
-            widget.setRemoteAdapter(appWidgetIds[i], R.id.words, svcIntent);
+            widget.setRemoteAdapter(appWidgetIds[i], R.id.scores_list, svcIntent);
 
             Intent clickIntent = new Intent(context, MainActivity.class);
             PendingIntent clickPI = PendingIntent.getActivity(context, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            widget.setPendingIntentTemplate(R.id.words, clickPI);
+            widget.setPendingIntentTemplate(R.id.scores_list, clickPI);
 
 
             clickIntent = new Intent(context, WidgetProvider.class);
@@ -59,6 +59,6 @@ public class WidgetProvider extends AppWidgetProvider {
     private void updateWidget(Context context) {
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         int appWidgetIds[] = appWidgetManager.getAppWidgetIds(new ComponentName(context, WidgetProvider.class));
-        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.words);
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.scores_list);
     }
 }

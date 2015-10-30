@@ -12,6 +12,20 @@ public class DatabaseContract
     public static final String SCORES_TABLE = "scores_table";
     public static final class scores_table implements BaseColumns
     {
+
+        //All Columns
+        public static final String[] SCORES_TABLE_COLUMNS = {
+
+                DatabaseContract.scores_table.LEAGUE_COL,
+                DatabaseContract.scores_table.DATE_COL,
+                DatabaseContract.scores_table.HOME_COL,
+                DatabaseContract.scores_table.AWAY_COL,
+                DatabaseContract.scores_table.HOME_GOALS_COL,
+                DatabaseContract.scores_table.AWAY_GOALS_COL,
+                DatabaseContract.scores_table.MATCH_ID,
+
+        };
+
         //Table data
         public static final String LEAGUE_COL = "league";
         public static final String DATE_COL = "date";

@@ -3,25 +3,32 @@ package barqsoft.footballscores.widget;
 /**
  * Created by bora on 19.10.2015.
  */
-import java.util.ArrayList;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
+import android.database.Cursor;
+import android.net.Uri;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+
+import barqsoft.footballscores.DatabaseContract;
 import barqsoft.footballscores.R;
 
 public class AppWidgetViewsFactory implements RemoteViewsService.RemoteViewsFactory {
+
+    private Cursor cursor;
+
     private Context context = null;
     //private int appWidgetId;
     private ArrayList<String> arrayList = new ArrayList<String>();
 
     public AppWidgetViewsFactory(Context ctxt, Intent intent) {
         this.context = ctxt;
-		/*appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
+        /*appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
 				AppWidgetManager.INVALID_APPWIDGET_ID);
 		Log.e(getClass().getSimpleName(), appWidgetId + "");*/
     }
@@ -33,26 +40,41 @@ public class AppWidgetViewsFactory implements RemoteViewsService.RemoteViewsFact
 
     @Override
     public void onDestroy() {
-        // no-op
+        if (cursor != null) {
+            cursor.close();
+        }
     }
 
     @Override
     public int getCount() {
-        return (arrayList.size());
+        return (cursor.getCount());
     }
 
     @Override
     public RemoteViews getViewAt(int position) {
         RemoteViews row = new RemoteViews(context.getPackageName(), R.layout.row);
 
-        row.setTextViewText(android.R.id.text1, arrayList.get(position));
+        cursor.moveToPosition(position);
+        String date = cursor.getString(cursor.getColumnIndexOrThrow("date"));
+        String home = cursor.getString(cursor.getColumnIndexOrThrow("home"));
+        String away = cursor.getString(cursor.getColumnIndexOrThrow("away"));
+        String home_goals = cursor.getString(cursor.getColumnIndexOrThrow("home_goals"));
+        String away_goals = cursor.getString(cursor.getColumnIndexOrThrow("away_goals"));
 
-        Intent i = new Intent();
-        Bundle extras = new Bundle();
+       /* if (Integer.valueOf(home_goals) == -1) {
+            home_goals = "";
+        }
+        if (Integer.valueOf(away_goals) == -1) {
+            away_goals = "";
+        }*/
 
-        extras.putString(WidgetProvider.EXTRA_WORD, arrayList.get(position));
-        i.putExtras(extras);
-        row.setOnClickFillInIntent(android.R.id.text1, i);
+        row.setTextViewText(R.id.data_textview, date);
+        row.setTextViewText(R.id.home_name, home);
+        row.setTextViewText(R.id.away_name, away);
+        row.setTextViewText(R.id.score_textview, home_goals + " : " + away_goals);
+        //Intent fillInIntent = new Intent();
+        //fillInIntent.putExtra(WidgetProvider.EXTRA_LIST_VIEW_ROW_NUMBER, position);
+        //row.setOnClickFillInIntent(R.id.widget_container, fillInIntent);
 
         return row;
     }
@@ -79,9 +101,8 @@ public class AppWidgetViewsFactory implements RemoteViewsService.RemoteViewsFact
 
     @Override
     public void onDataSetChanged() {
-        int current_item = Integer.parseInt(arrayList.get(arrayList.size() - 1));
-        current_item  = 1 + current_item;
-        arrayList.add(current_item+"");
-        Log.e(getClass().getSimpleName(), "current_item "+current_item);
+        Uri dateUri = DatabaseContract.scores_table.buildScoreWithDate();
+        String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        cursor = context.getContentResolver().query(dateUri, DatabaseContract.scores_table.SCORES_TABLE_COLUMNS, "date", new String[]{today}, null);
     }
 }
