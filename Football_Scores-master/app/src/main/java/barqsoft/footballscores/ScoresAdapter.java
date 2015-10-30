@@ -77,29 +77,27 @@ public class ScoresAdapter extends CursorAdapter
         View v = vi.inflate(R.layout.detail_fragment, null);
 
         //Content Description
-        String score_accessibility_1="";
-        String score_accessibility_2="";
         String contentDescription="";
         String statusDescription ="";
         String matchDescription ="";
 
         if(status.equals(DatabaseContract.scores_table.STATUS_FINISHED)){
+
             statusDescription = "played";
+
             if(homeGoals>awayGoals){
                 matchDescription="won";
-            }else{
+            }else if(homeGoals<awayGoals){
                 matchDescription="lost";
+            }else{
+                matchDescription="draws";
             }
 
-            score_accessibility_1 = context.getString(R.string.score_accessibility_1,home,away,statusDescription,matchTime);
-            score_accessibility_2 = context.getString(R.string.score_accessibility_2,home,matchDescription,homeGoals,awayGoals);
-
-            contentDescription = score_accessibility_1 + " " + score_accessibility_2;
+            contentDescription = context.getString(R.string.score_accessibility_finished,home,away,statusDescription,matchTime,home,matchDescription,home,homeGoals,away,awayGoals);
 
         }else{
             statusDescription = "will play";
-            score_accessibility_1 = context.getString(R.string.score_accessibility_1,home,away,statusDescription,matchTime);
-            contentDescription = score_accessibility_1;
+            contentDescription = context.getString(R.string.score_accessibility_timed,home,away,statusDescription,matchTime);
         }
 
         view.setContentDescription(contentDescription);
