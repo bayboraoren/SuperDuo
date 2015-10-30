@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingTop="5dp">
+        android:paddingTop="5dp"
+        android:id="@+id/scores_list_item">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -85,10 +86,6 @@
         </LinearLayout>
     </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/details_fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"></FrameLayout>
 </LinearLayout>
 
 

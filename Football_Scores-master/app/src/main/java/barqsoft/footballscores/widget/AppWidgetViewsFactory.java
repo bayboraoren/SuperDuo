@@ -80,7 +80,7 @@ public class AppWidgetViewsFactory implements RemoteViewsService.RemoteViewsFact
 
         Intent fillInIntent = new Intent();
         fillInIntent.putExtra(WidgetProvider.EXTRA_WORD, position);
-        row.setOnClickFillInIntent(R.id.scores_list, fillInIntent);
+        row.setOnClickFillInIntent(R.id.scores_list_item, fillInIntent);
 
 
         return row;
