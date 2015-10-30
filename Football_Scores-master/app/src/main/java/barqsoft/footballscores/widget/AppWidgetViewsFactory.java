@@ -78,9 +78,9 @@ public class AppWidgetViewsFactory implements RemoteViewsService.RemoteViewsFact
         row.setTextViewText(R.id.score_textview, home_goals + " : " + away_goals);
 
 
-        //Intent fillInIntent = new Intent();
-        //fillInIntent.putExtra(WidgetProvider.EXTRA_LIST_VIEW_ROW_NUMBER, position);
-        //row.setOnClickFillInIntent(R.id.widget_container, fillInIntent);
+        Intent fillInIntent = new Intent();
+        fillInIntent.putExtra(WidgetProvider.EXTRA_WORD, position);
+        row.setOnClickFillInIntent(R.id.scores_list, fillInIntent);
 
 
         return row;
