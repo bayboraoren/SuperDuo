@@ -157,6 +157,7 @@ public class myFetchService extends IntentService
         final String LINKS = "_links";
         final String SOCCER_SEASON = "soccerseason";
         final String SELF = "self";
+        final String STATUS ="status";
         final String MATCH_DATE = "date";
         final String HOME_TEAM = "homeTeamName";
         final String AWAY_TEAM = "awayTeamName";
@@ -171,6 +172,7 @@ public class myFetchService extends IntentService
         String mTime = null;
         String Home = null;
         String Away = null;
+        String Status = null;
         String Home_goals = null;
         String Away_goals = null;
         String match_id = null;
@@ -235,6 +237,7 @@ public class myFetchService extends IntentService
                     }
                     Home = match_data.getString(HOME_TEAM);
                     Away = match_data.getString(AWAY_TEAM);
+                    Status = match_data.getString(STATUS);
                     Home_goals = match_data.getJSONObject(RESULT).getString(HOME_GOALS);
                     Away_goals = match_data.getJSONObject(RESULT).getString(AWAY_GOALS);
                     match_day = match_data.getString(MATCH_DAY);
@@ -248,6 +251,7 @@ public class myFetchService extends IntentService
                     match_values.put(DatabaseContract.scores_table.AWAY_GOALS_COL,Away_goals);
                     match_values.put(DatabaseContract.scores_table.LEAGUE_COL,League);
                     match_values.put(DatabaseContract.scores_table.MATCH_DAY,match_day);
+                    match_values.put(DatabaseContract.scores_table.STATUS,Status);
                     //log spam
 
                     //Log.v(LOG_TAG,match_id);

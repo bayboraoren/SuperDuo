@@ -13,6 +13,9 @@ public class DatabaseContract
     public static final class scores_table implements BaseColumns
     {
 
+        //STATUS
+        public static final String STATUS_FINISHED = "FINISHED";
+
         //All Columns
         public static final String[] SCORES_TABLE_COLUMNS = {
 
@@ -23,6 +26,7 @@ public class DatabaseContract
                 DatabaseContract.scores_table.HOME_GOALS_COL,
                 DatabaseContract.scores_table.AWAY_GOALS_COL,
                 DatabaseContract.scores_table.MATCH_ID,
+                DatabaseContract.scores_table.STATUS
 
         };
 
@@ -36,6 +40,7 @@ public class DatabaseContract
         public static final String AWAY_GOALS_COL = "away_goals";
         public static final String MATCH_ID = "match_id";
         public static final String MATCH_DAY = "match_day";
+        public static final String STATUS = "status";
 
         //public static Uri SCORES_CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH)
                 //.build();
