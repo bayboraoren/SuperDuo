@@ -17,6 +17,7 @@ import java.util.Date;
 
 import barqsoft.footballscores.DatabaseContract;
 import barqsoft.footballscores.R;
+import barqsoft.footballscores.Utilies;
 
 public class AppWidgetViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
@@ -29,7 +30,7 @@ public class AppWidgetViewsFactory implements RemoteViewsService.RemoteViewsFact
     public AppWidgetViewsFactory(Context ctxt, Intent intent) {
         this.context = ctxt;
         /*appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
-				AppWidgetManager.INVALID_APPWIDGET_ID);
+                AppWidgetManager.INVALID_APPWIDGET_ID);
 		Log.e(getClass().getSimpleName(), appWidgetId + "");*/
     }
 
@@ -55,26 +56,32 @@ public class AppWidgetViewsFactory implements RemoteViewsService.RemoteViewsFact
         RemoteViews row = new RemoteViews(context.getPackageName(), R.layout.row);
 
         cursor.moveToPosition(position);
-        String date = cursor.getString(cursor.getColumnIndexOrThrow("date"));
-        String home = cursor.getString(cursor.getColumnIndexOrThrow("home"));
-        String away = cursor.getString(cursor.getColumnIndexOrThrow("away"));
-        String home_goals = cursor.getString(cursor.getColumnIndexOrThrow("home_goals"));
-        String away_goals = cursor.getString(cursor.getColumnIndexOrThrow("away_goals"));
+        String date = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.scores_table.DATE_COL));
+        String home = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.scores_table.HOME_COL));
+        String away = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.scores_table.AWAY_COL));
+        String home_goals = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.scores_table.HOME_GOALS_COL));
 
-       /* if (Integer.valueOf(home_goals) == -1) {
-            home_goals = "";
-        }
-        if (Integer.valueOf(away_goals) == -1) {
-            away_goals = "";
-        }*/
+        if (home_goals.equals("-1")) home_goals = "";
+        String away_goals = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.scores_table.AWAY_GOALS_COL));
+        if (away_goals.equals("-1")) away_goals = "";
 
-        row.setTextViewText(R.id.data_textview, date);
+        double match_id = cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseContract.scores_table.MATCH_ID));
+        int home_crest = Utilies.getTeamCrestByTeamName(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.scores_table.HOME_COL)));
+        int away_crest = Utilies.getTeamCrestByTeamName(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.scores_table.HOME_COL)));
+
+        row.setImageViewResource(R.id.home_crest,home_crest);
+        row.setImageViewResource(R.id.away_crest, away_crest);
+
+        row.setTextViewText(R.id.date_textview, date);
         row.setTextViewText(R.id.home_name, home);
         row.setTextViewText(R.id.away_name, away);
         row.setTextViewText(R.id.score_textview, home_goals + " : " + away_goals);
+
+
         //Intent fillInIntent = new Intent();
         //fillInIntent.putExtra(WidgetProvider.EXTRA_LIST_VIEW_ROW_NUMBER, position);
         //row.setOnClickFillInIntent(R.id.widget_container, fillInIntent);
+
 
         return row;
     }
