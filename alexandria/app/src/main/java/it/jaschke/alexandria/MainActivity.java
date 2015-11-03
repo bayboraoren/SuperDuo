@@ -14,7 +14,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import it.jaschke.alexandria.api.Callback;
@@ -57,7 +56,10 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 
         // Set up the drawer.
         navigationDrawerFragment.setUp(R.id.navigation_drawer,
-                    (DrawerLayout) findViewById(R.id.drawer_layout));
+                (DrawerLayout) findViewById(R.id.drawer_layout));
+
+
+
     }
 
     @Override
@@ -84,6 +86,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
                 .replace(R.id.container, nextFragment)
                 .addToBackStack((String) title)
                 .commit();
+
     }
 
     public void setTitle(int titleId) {
@@ -149,6 +152,8 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
                 .addToBackStack("Book Detail")
                 .commit();
 
+
+        navigationDrawerFragment.setDrawerToggleToBackButton();
     }
 
     private class MessageReciever extends BroadcastReceiver {
@@ -160,23 +165,25 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         }
     }
 
-    public void goBack(View view){
-        getSupportFragmentManager().popBackStack();
-    }
-
     private boolean isTablet() {
         return (getApplicationContext().getResources().getConfiguration().screenLayout
                 & Configuration.SCREENLAYOUT_SIZE_MASK)
                 >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
+
     @Override
     public void onBackPressed() {
         if(getSupportFragmentManager().getBackStackEntryCount()<2){
             finish();
         }
+
+        navigationDrawerFragment.setBackButtonToDrawerToggle();
+
         super.onBackPressed();
     }
+
+
 
 
 }
