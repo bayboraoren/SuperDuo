@@ -66,8 +66,8 @@ public class AppWidgetViewsFactory implements RemoteViewsService.RemoteViewsFact
         if (away_goals.equals("-1")) away_goals = "";
 
         double match_id = cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseContract.scores_table.MATCH_ID));
-        int home_crest = Utilies.getTeamCrestByTeamName(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.scores_table.HOME_COL)));
-        int away_crest = Utilies.getTeamCrestByTeamName(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.scores_table.HOME_COL)));
+        int home_crest = Utilies.getTeamCrestByTeamName(context,cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.scores_table.HOME_COL)));
+        int away_crest = Utilies.getTeamCrestByTeamName(context,cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.scores_table.HOME_COL)));
 
         row.setImageViewResource(R.id.home_crest,home_crest);
         row.setImageViewResource(R.id.away_crest, away_crest);
