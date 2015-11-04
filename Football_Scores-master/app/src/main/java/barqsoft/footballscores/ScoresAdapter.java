@@ -87,17 +87,17 @@ public class ScoresAdapter extends CursorAdapter
             statusDescription = "played";
 
             if(homeGoals>awayGoals){
-                matchDescription="won";
+                matchDescription=context.getString(R.string.won);
             }else if(homeGoals<awayGoals){
-                matchDescription="lost";
+                matchDescription=context.getString(R.string.lost);
             }else{
-                matchDescription="draws";
+                matchDescription=context.getString(R.string.draws);
             }
 
             contentDescription = context.getString(R.string.score_accessibility_finished,home,away,statusDescription,matchTime,home,matchDescription,home,homeGoals,away,awayGoals);
 
         }else{
-            statusDescription = "will play";
+            statusDescription = context.getString(R.string.will_play);
             contentDescription = context.getString(R.string.score_accessibility_timed,home,away,statusDescription,matchTime);
         }
 

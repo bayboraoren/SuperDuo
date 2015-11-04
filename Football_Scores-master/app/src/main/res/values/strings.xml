@@ -53,6 +53,11 @@
     <string name="west_bromwich_albion">West Bromwich Albion"</string>
     <string name="sunderland_afc">Sunderland AFC"</string>
     <string name="stoke_city_fc">Stoke City FC"</string>
+    <string name="today_format">yyyy-MM-dd</string>
+    <string name="won">won</string>
+    <string name="lost">lost</string>
+    <string name="draws">draws</string>
+    <string name="will_play">will_play</string>
 
 
 </resources>

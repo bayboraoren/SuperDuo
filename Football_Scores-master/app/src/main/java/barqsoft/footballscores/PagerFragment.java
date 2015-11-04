@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.format.Time;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +34,7 @@ public class PagerFragment extends Fragment
         {
             Date fragmentdate = new Date(System.currentTimeMillis()+((i-2)*86400000));
             //Date fragmentdate = new Date(System.currentTimeMillis()+((i-4)*86400000));
-            SimpleDateFormat mformat = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat mformat = new SimpleDateFormat(getString(R.string.today_format));
             viewFragments[i] = new MainScreenFragment();
             viewFragments[i].setFragmentDate(mformat.format(fragmentdate));
         }
@@ -48,7 +47,6 @@ public class PagerFragment extends Fragment
         @Override
         public Fragment getItem(int i)
         {
-            Log.i("Test",i+"");
             return viewFragments[i];
         }
 

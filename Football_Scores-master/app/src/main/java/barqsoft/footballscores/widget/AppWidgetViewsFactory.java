@@ -109,7 +109,8 @@ public class AppWidgetViewsFactory implements RemoteViewsService.RemoteViewsFact
     @Override
     public void onDataSetChanged() {
         Uri dateUri = DatabaseContract.scores_table.buildScoreWithDate();
-        String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-        cursor = context.getContentResolver().query(dateUri, DatabaseContract.scores_table.SCORES_TABLE_COLUMNS, "date", new String[]{today}, null);
+        String todayFormat = context.getString(R.string.today_format);
+        String today = new SimpleDateFormat(todayFormat).format(new Date());
+        cursor = context.getContentResolver().query(dateUri, DatabaseContract.scores_table.SCORES_TABLE_COLUMNS, DatabaseContract.scores_table.DATE_COL, new String[]{today}, null);
     }
 }
